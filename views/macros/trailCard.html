@@ -1,0 +1,9 @@
+{% macro trailCard(trail) %}
+  <article>
+    <span class="badge">{{ difficulty }}</span>
+    <a href="/trails/{{ trail.slug }}">
+      <h2>{{ trail.name }}</h2>
+      <p>{{ trail.description }}</p>
+    </a>
+  </article>
+{% endmacro %}

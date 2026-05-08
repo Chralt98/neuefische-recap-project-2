@@ -1,12 +1,12 @@
 import { getDB } from "./db";
 
-export interface Region {
+export type Region = {
   id: number;
   name: string;
   slug: string;
   country: string;
   description: string;
-}
+};
 
 export async function getAllRegions(): Promise<Region[]> {
   const db = getDB();

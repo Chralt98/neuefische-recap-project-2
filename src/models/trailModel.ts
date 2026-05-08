@@ -33,21 +33,28 @@ FROM trails
 INNER JOIN regions ON trails.region_id = regions.id
 `;
 
-export async function getAllTrails(): Promise<Trail[]> {
+export async function getAllTrails(): Promise<RegionizedTrail[]> {
   const db = getDB();
-  return await db.all<Trail[]>(trailsSelect);
+  return await db.all<RegionizedTrail[]>(trailsSelect);
 }
 
-export async function getTrailBySlug(slug: string): Promise<Trail | undefined> {
+export async function getTrailBySlug(
+  slug: string,
+): Promise<RegionizedTrail | undefined> {
   const db = getDB();
-  return await db.get<Trail>(`${trailsSelect} WHERE slug = @slug`, {
+  return await db.get<RegionizedTrail>(`${trailsSelect} WHERE slug = @slug`, {
     "@slug": slug,
   });
 }
 
-export async function getTrailsByRegionId(regionId: number): Promise<Trail[]> {
+export async function getTrailsByRegionId(
+  regionId: number,
+): Promise<RegionizedTrail[]> {
   const db = getDB();
-  return await db.all<Trail[]>(`${trailsSelect} WHERE regionId = @regionId`, {
-    "@regionId": regionId,
-  });
+  return await db.all<RegionizedTrail[]>(
+    `${trailsSelect} WHERE regionId = @regionId`,
+    {
+      "@regionId": regionId,
+    },
+  );
 }

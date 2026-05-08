@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Trail Guide</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      <h1>Trail Guide</h1>
+      <nav>
+        <a href="/">Home</a>
+      </nav>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <!-- Footer-->
+    <footer class="border-top">
+      <div class="container px-4 px-lg-5"></div>
+    </footer>
+  </body>
+</html>

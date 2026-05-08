@@ -1,6 +1,7 @@
 import nunjucks from "nunjucks";
 import express from "express";
 import path from "node:path";
+import { connectDB } from "./models/db.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -11,6 +12,8 @@ nunjucks.configure(viewsDir, {
   autoescape: true,
   express: app,
 });
+
+await connectDB();
 
 app.get("/", (req, res) => {
   res.render("index.html");

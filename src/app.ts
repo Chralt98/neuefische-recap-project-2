@@ -2,6 +2,7 @@ import nunjucks from "nunjucks";
 import express from "express";
 import path from "node:path";
 import { connectDB, closeDB } from "./models/db.js";
+import websiteRouter from "./routes/websiteRoutes.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -15,9 +16,7 @@ nunjucks.configure(viewsDir, {
 
 await connectDB();
 
-app.get("/", (req, res) => {
-  res.render("index.html");
-});
+app.use("/", websiteRouter);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

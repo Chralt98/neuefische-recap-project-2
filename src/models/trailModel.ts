@@ -42,9 +42,12 @@ export async function getTrailBySlug(
   slug: string,
 ): Promise<RegionizedTrail | undefined> {
   const db = getDB();
-  return await db.get<RegionizedTrail>(`${trailsSelect} WHERE slug = @slug`, {
-    "@slug": slug,
-  });
+  return await db.get<RegionizedTrail>(
+    `${trailsSelect} WHERE trails.slug = @slug`,
+    {
+      "@slug": slug,
+    },
+  );
 }
 
 export async function getTrailsByRegionId(
@@ -52,7 +55,7 @@ export async function getTrailsByRegionId(
 ): Promise<RegionizedTrail[]> {
   const db = getDB();
   return await db.all<RegionizedTrail[]>(
-    `${trailsSelect} WHERE regionId = @regionId`,
+    `${trailsSelect} WHERE trails.region_id = @regionId`,
     {
       "@regionId": regionId,
     },

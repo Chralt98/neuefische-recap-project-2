@@ -1,4 +1,18 @@
 {% extends "base.html" %}
+
 {% block content %}
-  <h2>No content yet.</h2>
+  <section>
+    <h2>Regions</h2>
+    <p>Choose a region to explore its trails.</p>
+  </section>
+
+  {% for region in regions %}
+    <article>
+      <h3><a href="/regions/{{ region.slug }}">{{ region.name }}</a></h3>
+      <p><strong>{{ region.country }}</strong></p>
+      <p>{{ region.description }}</p>
+    </article>
+  {% else %}
+    <p>No regions available yet.</p>
+  {% endfor %}
 {% endblock %}

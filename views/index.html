@@ -1,8 +1,16 @@
 {% extends "base.html" %}
+
 {% block content %}
-  {%
-    import "macros/trailCard.html"
-    as trailCardMacros
-  %}
-  {{ trailCardMacros.trailCard(trail) }}
+  {% import "macros/trailCard.html" as trailCardMacros %}
+
+  <section>
+    <h2>All Trails</h2>
+    <p>Browse hiking trails across every region.</p>
+  </section>
+
+  {% for trail in trails %}
+    {{ trailCardMacros.trailCard(trail) }}
+  {% else %}
+    <p>No trails available yet.</p>
+  {% endfor %}
 {% endblock %}

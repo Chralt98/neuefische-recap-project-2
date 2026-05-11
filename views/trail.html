@@ -9,7 +9,7 @@
 
     <img src="{{ trail.imageUrl }}" alt="{{ trail.title }}" />
 
-    <p>{{ trail.description }}</p>
+    {{ trail.description | safe }}
 
     <p>
       <strong>Region:</strong> {{ trail.regionName }}, {{ trail.regionCountry }}

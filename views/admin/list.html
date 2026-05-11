@@ -24,7 +24,13 @@
           <td>{{ trail.difficulty }}</td>
           <td>{{ trail.distanceKm }} km</td>
           <td>
-            <a href="/admin/trails/{{ trail.id }}/edit" role="button">Edit</a>
+            <form
+              action="/admin/trails/{{ trail.id }}/edit"
+              method="get"
+              style="display: inline"
+            >
+              <button type="submit">Edit</button>
+            </form>
             <form
               action="/admin/trails/{{ trail.id }}/delete"
               method="post"

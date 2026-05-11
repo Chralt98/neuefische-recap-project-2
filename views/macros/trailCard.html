@@ -5,7 +5,7 @@
       <h3><a href="/trails/{{ trail.slug }}">{{ trail.title }}</a></h3>
     </header>
 
-    <p>{{ trail.description }}</p>
+    {{ trail.description | safe }}
     <p>
       <strong>Region:</strong> {{ trail.regionName }}, {{ trail.regionCountry }}
     </p>

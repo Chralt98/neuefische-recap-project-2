@@ -94,6 +94,7 @@ export async function showNewTrailForm(req: Request, res: Response) {
   }
 }
 
+// Request<Params, ResponseBody, RequestBody, Query>
 export async function createTrail(
   req: Request<{}, {}, TrailFormBody>,
   res: Response,

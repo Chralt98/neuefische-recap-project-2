@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section>
+    <h2>Admin</h2>
+    <p><a href="/admin/trails/new" role="button">Add trail</a></p>
+  </section>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Trail</th>
+        <th>Region</th>
+        <th>Difficulty</th>
+        <th>Distance</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trail in trails %}
+        <tr>
+          <td>{{ trail.title }}</td>
+          <td>{{ trail.regionName }}</td>
+          <td>{{ trail.difficulty }}</td>
+          <td>{{ trail.distanceKm }} km</td>
+          <td>
+            <a href="/admin/trails/{{ trail.id }}/edit" role="button">Edit</a>
+            <form
+              action="/admin/trails/{{ trail.id }}/delete"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit" class="secondary">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="5">No trails available yet.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

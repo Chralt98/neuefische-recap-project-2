@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section>
+    <h2>{{ formTitle }}</h2>
+  </section>
+
+  <form action="{{ action }}" method="post">
+    <label>
+      Title
+      <input
+        type="text"
+        name="title"
+        value="{{ trail.title if trail else '' }}"
+        required
+      />
+    </label>
+
+    <label>
+      Region
+      <select name="regionId" required>
+        {% for region in regions %}
+          <option
+            value="{{ region.id }}"
+            {% if trail and trail.regionId == region.id %}selected{% endif %}
+          >
+            {{ region.name }} ({{ region.country }})
+          </option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>
+      Difficulty
+      <select name="difficulty" required>
+        {% for difficulty in difficulties %}
+          <option
+            value="{{ difficulty }}"
+            {% if trail and trail.difficulty == difficulty %}selected{% endif %}
+          >
+            {{ difficulty }}
+          </option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>
+      Distance in kilometers
+      <input
+        type="number"
+        name="distanceKm"
+        value="{{ trail.distanceKm if trail else '' }}"
+        min="0"
+        step="0.1"
+        required
+      />
+    </label>
+
+    <label>
+      Image URL
+      <input
+        type="url"
+        name="imageUrl"
+        value="{{ trail.imageUrl if trail else '' }}"
+      />
+    </label>
+
+    <label>
+      Description
+      <textarea name="description" rows="8">
+{{ trail.description if trail else '' }}</textarea
+      >
+    </label>
+
+    <button type="submit">Save trail</button>
+    <a href="/admin" role="button" class="secondary">Cancel</a>
+  </form>
+{% endblock %}

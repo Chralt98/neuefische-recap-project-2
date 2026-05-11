@@ -5,6 +5,7 @@ import { connectDB, closeDB } from "./models/db.js";
 import websiteRouter from "./routes/websiteRoutes.js";
 import { logger } from "./middleware/logger.js";
 import adminRouter from "./routes/adminRoutes.js";
+import apiRouter from "./routes/apiRoutes.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -19,9 +20,11 @@ nunjucks.configure(viewsDir, {
 await connectDB();
 
 app.use(logger);
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/admin", adminRouter);
 app.use("/", websiteRouter);
+app.use("/api", apiRouter);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

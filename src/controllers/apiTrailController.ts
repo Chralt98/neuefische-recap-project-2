@@ -6,13 +6,13 @@ import {
   patchTrail,
   deleteTrail as deleteTrailById,
   type Trail,
-  type TrailFormData,
 } from "../models/trailModel";
+import { buildTrailFormData, isTrailDifficulty } from "../utils/trailInput";
 
 export async function showAllTrails(req: Request, res: Response) {
   const regionSlug = req.query.region as string | undefined;
   const difficulty = req.query.difficulty as Trail["difficulty"] | undefined;
-  if (difficulty && !["easy", "moderate", "hard"].includes(difficulty)) {
+  if (difficulty && !isTrailDifficulty(difficulty)) {
     return res.status(400).json({ error: "Invalid difficulty value" });
   }
   try {
@@ -55,22 +55,12 @@ export async function createTrail(req: Request, res: Response) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  if (!["easy", "moderate", "hard"].includes(body.difficulty)) {
+  if (!isTrailDifficulty(body.difficulty)) {
     return res.status(400).json({ error: "Invalid difficulty value" });
   }
 
-  const trailFormData = {
-    regionId: body.regionId,
-    title: body.title,
-    slug: body.slug,
-    difficulty: body.difficulty,
-    distanceKm: body.distanceKm,
-    description: body.description,
-    imageUrl: body.imageUrl,
-  } as TrailFormData;
-
   try {
-    const newTrail = await addTrail(trailFormData);
+    const newTrail = await addTrail(buildTrailFormData(body, "preserve"));
     res.status(201).json({ trail: newTrail });
   } catch (error) {
     console.error(error);
@@ -91,10 +81,7 @@ export async function updateTrail(req: Request, res: Response) {
     return res.status(400).json({ error: "No fields provided for update" });
   }
 
-  if (
-    body.difficulty &&
-    !["easy", "moderate", "hard"].includes(body.difficulty)
-  ) {
+  if (body.difficulty && !isTrailDifficulty(body.difficulty)) {
     return res.status(400).json({ error: "Invalid difficulty value" });
   }
 

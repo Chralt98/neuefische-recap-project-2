@@ -1,5 +1,4 @@
 import { type Request, type Response } from "express";
-import sanitizeHtml from "sanitize-html";
 import { getAllRegions } from "../models/regionModel";
 import {
   addTrail,
@@ -7,9 +6,11 @@ import {
   getAllTrails,
   getTrailById,
   updateTrail,
-  type Trail,
-  type TrailFormData,
 } from "../models/trailModel";
+import {
+  buildTrailFormData,
+  trailDifficulties as difficulties,
+} from "../utils/trailInput";
 
 type TrailFormBody = {
   regionId?: string;
@@ -19,54 +20,6 @@ type TrailFormBody = {
   description?: string;
   imageUrl?: string;
 };
-
-const difficulties: Trail["difficulty"][] = ["easy", "moderate", "hard"];
-
-function createSlug(title: string): string {
-  // g means global replacement
-  return (
-    title
-      .toLowerCase()
-      .trim()
-      // Replaces every group of characters that is not a lowercase letter or number with -.
-      .replace(/[^a-z0-9]+/g, "-")
-      // Removes dashes from the start or end of the string.
-      .replace(/^-+|-+$/g, "")
-  );
-}
-
-function cleanText(value: string | undefined): string {
-  return sanitizeHtml(value ?? "", {
-    allowedTags: [],
-    allowedAttributes: {},
-  }).trim();
-}
-
-function cleanHtml(value: string | undefined): string {
-  return sanitizeHtml(value ?? "", {
-    allowedTags: ["p", "strong", "em", "ul", "ol", "li", "br"],
-    allowedAttributes: {},
-  }).trim();
-}
-
-function getTrailData(body: TrailFormBody): TrailFormData {
-  const title = cleanText(body.title);
-  const difficulty = difficulties.includes(
-    body.difficulty as Trail["difficulty"],
-  )
-    ? (body.difficulty as Trail["difficulty"])
-    : "easy";
-
-  return {
-    regionId: Number(body.regionId),
-    title,
-    slug: createSlug(title),
-    difficulty,
-    distanceKm: Number(body.distanceKm),
-    description: cleanHtml(body.description),
-    imageUrl: cleanText(body.imageUrl),
-  };
-}
 
 export async function showAdminTrailList(req: Request, res: Response) {
   try {
@@ -100,7 +53,7 @@ export async function createTrail(
   res: Response,
 ) {
   try {
-    await addTrail(getTrailData(req.body));
+    await addTrail(buildTrailFormData(req.body, "generate"));
     res.redirect("/admin");
   } catch (error) {
     console.error(error);
@@ -137,7 +90,10 @@ export async function saveTrail(
   res: Response,
 ) {
   try {
-    await updateTrail(Number(req.params.id), getTrailData(req.body));
+    await updateTrail(
+      Number(req.params.id),
+      buildTrailFormData(req.body, "generate"),
+    );
     res.redirect("/admin");
   } catch (error) {
     console.error(error);

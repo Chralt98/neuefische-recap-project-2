@@ -48,7 +48,7 @@ export async function getTrailsWithFilters(
   const params: Record<string, unknown> = {};
 
   if (regionSlug) {
-    query += " WHERE trails.slug = @regionSlug";
+    query += " WHERE regions.slug = @regionSlug";
     params["@regionSlug"] = regionSlug;
   }
 

@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
 import { getAllRegions, getRegionBySlug } from "../models/regionModel";
 import { getTrailsByRegionId } from "../models/trailModel";
-import { formatDate } from "../utils/formatDate";
+import { toTrailViewModel } from "../utils/trailViewModel";
 
 export async function showAllRegions(req: Request, res: Response) {
   try {
@@ -26,10 +26,7 @@ export async function showRegionWithTrailsBySlug(
     const trails = await getTrailsByRegionId(region.id);
     res.render("region.html", {
       region,
-      trails: trails.map((trail) => ({
-        ...trail,
-        formattedCreatedAt: formatDate(trail.createdAt),
-      })),
+      trails: trails.map(toTrailViewModel),
     });
   } catch (error) {
     console.error(error);

@@ -1,21 +1,6 @@
 import { type Request, type Response } from "express";
-import {
-  getAllTrails,
-  getTrailBySlug,
-  type RegionizedTrail,
-} from "../models/trailModel";
-import { formatDate } from "../utils/formatDate";
-
-type TrailViewModel = RegionizedTrail & {
-  formattedCreatedAt: string;
-};
-
-function toTrailViewModel(trail: RegionizedTrail): TrailViewModel {
-  return {
-    ...trail,
-    formattedCreatedAt: formatDate(trail.createdAt),
-  };
-}
+import { getAllTrails, getTrailBySlug } from "../models/trailModel";
+import { toTrailViewModel } from "../utils/trailViewModel";
 
 export async function showAllTrails(req: Request, res: Response) {
   try {
